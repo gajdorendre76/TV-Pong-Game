@@ -1,26 +1,23 @@
 # TV Pong Game 1.8 — International Edition
 
-A retro Pong game made with Godot 4 and smartphone browser controls over local Wi-Fi.
+Godot 4 project, translated from TV Pong Game 1.7.2.
 
 ## Game modes
+- Versus Computer
+- Two Players
+- Team Match 2v2 (four phones, four paddles)
 
-- Single-player vs computer
-- Two players
-- 2 vs 2 team play (four smartphones)
+## Rules
+Each round is played to 21 points. The first player or team to win two rounds wins the match. The next round begins on Enter, Space, or mouse click. After the champion is announced, the game returns to the main menu.
 
-## Features
+## Phone controllers
+Connect phones to the same Wi-Fi network as the computer. Scan the QR code shown in the main menu or open the displayed local URL. Choose a player slot, enter your name, and swipe vertically to move your paddle. Each phone has its own sensitivity slider.
 
-- Smartphone-based swipe controls and sensitivity adjustment
-- Player names entered on phones
-- QR-code pairing
-- Connection protection
-- Best of three rounds, 21 points per round
-- Retro arcade interface, music and intro video
+## Starting
+Open `project.godot` in Godot 4 and run the project. The intro plays before the menu.
 
-## Running the project
+## Audio
+The original menu music and gameplay music are included. Gameplay music remains at 20%.
 
-Open `project.godot` with Godot 4 and run the project. Connect the phones and computer to the same local Wi-Fi. Scan the QR code shown by the game.
-
-## Media rights
-
-Confirm the redistribution license for all supplied music, images and intro video before sharing this project publicly.
+## Note
+This translation was checked statically, but runtime behavior should be tested in Godot.
