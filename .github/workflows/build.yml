@@ -1,0 +1,55 @@
+name: Build Windows and Linux downloads
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: Windows Desktop
+            platform: windows
+            filename: TV-Pong-Game.exe
+          - target: Linux/X11
+            platform: linux
+            filename: TV-Pong-Game.x86_64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.3.0
+          use-dotnet: false
+          include-templates: true
+      - name: Import assets
+        run: godot --headless --path . --editor --import --quit
+      - name: Export release
+        shell: bash
+        run: |
+          mkdir -p "build/${{ matrix.platform }}"
+          godot --headless --path . --export-release "${{ matrix.target }}" "build/${{ matrix.platform }}/${{ matrix.filename }}"
+          test -s "build/${{ matrix.platform }}/${{ matrix.filename }}"
+          if [ "${{ matrix.platform }}" = linux ]; then chmod +x "build/${{ matrix.platform }}/${{ matrix.filename }}"; fi
+      - name: Package
+        shell: bash
+        run: |
+          cd "build/${{ matrix.platform }}"
+          zip -9 "../../TV-Pong-Game-1.8-${{ matrix.platform }}-x86_64.zip" *
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TV-Pong-Game-${{ matrix.platform }}-x86_64
+          path: TV-Pong-Game-1.8-${{ matrix.platform }}-x86_64.zip
+          if-no-files-found: error
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: TV-Pong-Game-1.8-${{ matrix.platform }}-x86_64.zip
